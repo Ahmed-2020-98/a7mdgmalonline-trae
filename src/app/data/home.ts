@@ -1,4 +1,6 @@
 import { AboutContent, HeroContent } from "../lib/types";
+import heroImage from "@/assets/images/hero.svg";
+import aboutImage from "@/assets/images/about.svg";
 
 export const heroContent: HeroContent = {
   title: "نبني حضورك الرقمي بثقة وأناقة",
@@ -8,7 +10,7 @@ export const heroContent: HeroContent = {
   ctaHref: "#contact",
   secondaryCtaLabel: "شاهد أعمالنا",
   secondaryCtaHref: "#portfolio",
-  imageSrc: "/images/hero.svg",
+  imageSrc: heroImage,
   imageAlt: "واجهة رقمية حديثة للأعمال",
 };
 
@@ -18,6 +20,6 @@ export const aboutContent: AboutContent = {
     "فريق تصميم وتطوير متخصص في بناء واجهات عالية الأداء وتجربة مستخدم احترافية تدعم نمو علامتك التجارية.",
   ctaLabel: "تعرف أكثر",
   ctaHref: "#services",
-  imageSrc: "/images/about.svg",
+  imageSrc: aboutImage,
   imageAlt: "فريق يعمل على التخطيط والتصميم",
 };

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { Cairo } from "next/font/google";
-import "./globals.css";
+import "@/assets/styles/globals.css";
 import { siteConfig } from "./data/site";
+import ThemeProvider from "./components/theme-provider";
 
 const cairo = Cairo({
   variable: "--font-primary",
@@ -39,9 +40,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ar" dir="rtl" className="scroll-smooth">
+    <html lang="ar" dir="rtl" className="scroll-smooth" suppressHydrationWarning>
       <body className={`${cairo.variable} bg-background text-foreground`}>
-        {children}
+        <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>
   );

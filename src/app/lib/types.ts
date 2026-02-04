@@ -1,3 +1,5 @@
+import type { StaticImageData } from "next/image";
+
 export type NavItem = {
   label: string;
   href: string;
@@ -19,7 +21,7 @@ export type HeroContent = {
   ctaHref: string;
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
-  imageSrc: string;
+  imageSrc: StaticImageData;
   imageAlt: string;
 };
 
@@ -28,7 +30,7 @@ export type AboutContent = {
   description: string;
   ctaLabel: string;
   ctaHref: string;
-  imageSrc: string;
+  imageSrc: StaticImageData;
   imageAlt: string;
 };
 
@@ -47,7 +49,7 @@ export type ServiceIconName =
 export type Project = {
   name: string;
   description: string;
-  images: string[];
+  images: StaticImageData[];
   url: string;
   ctaLabel: string;
 };
@@ -60,12 +62,12 @@ export type FaqItem = {
 export type Testimonial = {
   name: string;
   comment: string;
-  avatarSrc: string;
+  avatarSrc: StaticImageData;
 };
 
 export type Client = {
   name: string;
-  logoSrc: string;
+  logoSrc: StaticImageData;
 };
 
 export type ContactInfo = {

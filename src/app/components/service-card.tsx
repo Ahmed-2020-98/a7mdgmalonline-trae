@@ -7,7 +7,7 @@ type ServiceCardProps = {
 
 export default function ServiceCard({ service }: ServiceCardProps) {
   return (
-    <div className="flex h-full flex-col gap-4 rounded-2xl border border-border bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
+    <div className="flex h-full flex-col gap-4 rounded-2xl border border-border bg-background p-6 shadow-sm transition hover:-translate-y-1 hover:border-primary/30 hover:shadow-md">
       <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
         <ServiceIcon name={service.icon} />
       </div>

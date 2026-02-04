@@ -6,7 +6,7 @@ import SectionHeading from "../ui/section-heading";
 
 export default function PortfolioSection() {
   return (
-    <section id="portfolio" className="bg-muted/60">
+    <section id="portfolio" className="bg-muted">
       <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="flex flex-col gap-8">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">

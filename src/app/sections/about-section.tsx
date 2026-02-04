@@ -4,7 +4,7 @@ import Button from "../ui/button";
 
 export default function AboutSection() {
   return (
-    <section id="about" className="bg-white">
+    <section id="about" className="bg-background">
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
         <div className="relative mx-auto aspect-[4/3] w-full max-w-lg overflow-hidden rounded-[32px] border border-border bg-muted">
           <Image

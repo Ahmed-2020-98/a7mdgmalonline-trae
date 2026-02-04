@@ -1,10 +1,15 @@
-import { contactFields, contactFormContent, contactInfo } from "../data/contact";
+import {
+  contactFields,
+  contactFormContent,
+  contactInfo,
+  contactInfoLabels,
+} from "../data/contact";
 import { contactIntro } from "../data/sections";
 import SectionHeading from "../ui/section-heading";
 
 export default function ContactSection() {
   return (
-    <section id="contact" className="bg-muted/60">
+    <section id="contact" className="bg-muted">
       <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
           <div className="space-y-8">
@@ -13,27 +18,33 @@ export default function ContactSection() {
               description={contactIntro.description}
             />
             <div className="space-y-4 text-sm text-foreground/80">
-              <div className="rounded-2xl border border-border bg-white p-5">
-                <p className="text-xs text-foreground/60">الهاتف</p>
+              <div className="rounded-2xl border border-border bg-background p-5">
+                <p className="text-xs text-foreground/60">
+                  {contactInfoLabels.phone}
+                </p>
                 <p className="mt-2 text-base font-semibold text-foreground">
                   {contactInfo.phone}
                 </p>
               </div>
-              <div className="rounded-2xl border border-border bg-white p-5">
-                <p className="text-xs text-foreground/60">البريد الإلكتروني</p>
+              <div className="rounded-2xl border border-border bg-background p-5">
+                <p className="text-xs text-foreground/60">
+                  {contactInfoLabels.email}
+                </p>
                 <p className="mt-2 text-base font-semibold text-foreground">
                   {contactInfo.email}
                 </p>
               </div>
-              <div className="rounded-2xl border border-border bg-white p-5">
-                <p className="text-xs text-foreground/60">العنوان</p>
+              <div className="rounded-2xl border border-border bg-background p-5">
+                <p className="text-xs text-foreground/60">
+                  {contactInfoLabels.address}
+                </p>
                 <p className="mt-2 text-base font-semibold text-foreground">
                   {contactInfo.address}
                 </p>
               </div>
             </div>
           </div>
-          <form className="rounded-3xl border border-border bg-white p-6 shadow-sm">
+          <form className="rounded-3xl border border-border bg-background p-6 shadow-sm">
             <div className="grid gap-5 sm:grid-cols-2">
               {contactFields.map((field) =>
                 field.as === "textarea" ? (

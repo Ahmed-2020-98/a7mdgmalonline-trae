@@ -10,7 +10,7 @@ export default function Accordion({ items }: AccordionProps) {
       {items.map((item) => (
         <details
           key={item.question}
-          className="group rounded-2xl border border-border bg-white px-5 py-4 transition hover:border-primary/40"
+          className="group rounded-2xl border border-border bg-background px-5 py-4 transition hover:border-primary/40"
         >
           <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-semibold text-foreground">
             <span>{item.question}</span>

@@ -1,16 +1,17 @@
 import { Client } from "../lib/types";
+import clientLogo from "@/assets/images/client-logo.svg";
 
 export const clients: Client[] = [
-  { name: "شركة أطلس", logoSrc: "/images/client-logo.svg" },
-  { name: "مجموعة المدار", logoSrc: "/images/client-logo.svg" },
-  { name: "روّاد التقنية", logoSrc: "/images/client-logo.svg" },
-  { name: "حلول أفق", logoSrc: "/images/client-logo.svg" },
-  { name: "بيت الإبداع", logoSrc: "/images/client-logo.svg" },
-  { name: "نخبة الأعمال", logoSrc: "/images/client-logo.svg" },
-  { name: "تجارة بلس", logoSrc: "/images/client-logo.svg" },
-  { name: "اتجاهات السوق", logoSrc: "/images/client-logo.svg" },
-  { name: "ريادة للخدمات", logoSrc: "/images/client-logo.svg" },
-  { name: "مستقبلنا الرقمي", logoSrc: "/images/client-logo.svg" },
-  { name: "تسويق زِن", logoSrc: "/images/client-logo.svg" },
-  { name: "مؤسسة رُقي", logoSrc: "/images/client-logo.svg" },
+  { name: "شركة أطلس", logoSrc: clientLogo },
+  { name: "مجموعة المدار", logoSrc: clientLogo },
+  { name: "روّاد التقنية", logoSrc: clientLogo },
+  { name: "حلول أفق", logoSrc: clientLogo },
+  { name: "بيت الإبداع", logoSrc: clientLogo },
+  { name: "نخبة الأعمال", logoSrc: clientLogo },
+  { name: "تجارة بلس", logoSrc: clientLogo },
+  { name: "اتجاهات السوق", logoSrc: clientLogo },
+  { name: "ريادة للخدمات", logoSrc: clientLogo },
+  { name: "مستقبلنا الرقمي", logoSrc: clientLogo },
+  { name: "تسويق زِن", logoSrc: clientLogo },
+  { name: "مؤسسة رُقي", logoSrc: clientLogo },
 ];

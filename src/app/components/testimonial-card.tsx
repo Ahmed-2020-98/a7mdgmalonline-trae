@@ -9,7 +9,7 @@ export default function TestimonialCard({
   testimonial,
 }: TestimonialCardProps) {
   return (
-    <div className="flex h-full flex-col gap-4 rounded-2xl border border-border bg-white p-6 shadow-sm">
+    <div className="flex h-full flex-col gap-4 rounded-2xl border border-border bg-background p-6 shadow-sm">
       <p className="text-sm leading-7 text-foreground/70">
         {testimonial.comment}
       </p>
