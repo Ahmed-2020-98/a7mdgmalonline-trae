@@ -9,6 +9,7 @@ export const projects: Project[] = [
     images: [projectPlaceholder],
     url: "https://example.com",
     ctaLabel: "زيارة الموقع",
+    category: "مواقع ويب",
   },
   {
     name: "متجر نُدى للعناية",
@@ -17,6 +18,7 @@ export const projects: Project[] = [
     images: [projectPlaceholder],
     url: "https://example.com",
     ctaLabel: "زيارة الموقع",
+    category: "متاجر إلكترونية",
   },
   {
     name: "بوابة شركاء أفق",
@@ -25,5 +27,6 @@ export const projects: Project[] = [
     images: [projectPlaceholder],
     url: "https://example.com",
     ctaLabel: "زيارة الموقع",
+    category: "لوحات تحكم",
   },
 ];

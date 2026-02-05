@@ -1,5 +1,5 @@
 import { AboutContent, HeroContent } from "../lib/types";
-import heroImage from "@/assets/images/hero.svg";
+import heroImage from "@/assets/images/hero.webp";
 import aboutImage from "@/assets/images/about.svg";
 
 export const heroContent: HeroContent = {
@@ -11,7 +11,7 @@ export const heroContent: HeroContent = {
   secondaryCtaLabel: "شاهد أعمالنا",
   secondaryCtaHref: "#portfolio",
   imageSrc: heroImage,
-  imageAlt: "واجهة رقمية حديثة للأعمال",
+  imageAlt: "تصميم مواقع وتطبيقات موبايل بواجهة حديثة",
 };
 
 export const aboutContent: AboutContent = {

@@ -21,7 +21,7 @@ export type HeroContent = {
   ctaHref: string;
   secondaryCtaLabel: string;
   secondaryCtaHref: string;
-  imageSrc: StaticImageData;
+  imageSrc: StaticImageData | string;
   imageAlt: string;
 };
 
@@ -35,6 +35,7 @@ export type AboutContent = {
 };
 
 export type Service = {
+  id?: string;
   title: string;
   description: string;
   icon: ServiceIconName;
@@ -47,11 +48,13 @@ export type ServiceIconName =
   | "next-laravel";
 
 export type Project = {
+  id?: string;
   name: string;
   description: string;
-  images: StaticImageData[];
+  images: Array<StaticImageData | string>;
   url: string;
   ctaLabel: string;
+  category: string;
 };
 
 export type FaqItem = {
@@ -66,8 +69,9 @@ export type Testimonial = {
 };
 
 export type Client = {
+  id?: string;
   name: string;
-  logoSrc: StaticImageData;
+  logoSrc: StaticImageData | string;
 };
 
 export type ContactInfo = {

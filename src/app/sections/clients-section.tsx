@@ -1,9 +1,10 @@
-import { clients } from "../data/clients";
 import { clientsIntro } from "../data/sections";
 import ClientLogo from "../components/client-logo";
 import SectionHeading from "../ui/section-heading";
+import { getClients } from "../lib/site-store";
 
-export default function ClientsSection() {
+export default async function ClientsSection() {
+  const clients = await getClients();
   return (
     <section id="clients" className="bg-background">
       <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">

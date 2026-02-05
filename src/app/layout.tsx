@@ -41,7 +41,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ar" dir="rtl" className="scroll-smooth" suppressHydrationWarning>
-      <body className={`${cairo.variable} bg-background text-foreground`}>
+      <body
+        className={`${cairo.variable} bg-background text-foreground`}
+        suppressHydrationWarning
+      >
         <ThemeProvider>{children}</ThemeProvider>
       </body>
     </html>

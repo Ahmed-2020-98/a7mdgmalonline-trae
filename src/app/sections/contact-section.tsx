@@ -44,7 +44,10 @@ export default function ContactSection() {
               </div>
             </div>
           </div>
-          <form className="rounded-3xl border border-border bg-background p-6 shadow-sm">
+          <form
+            className="rounded-3xl border border-border bg-background p-6 shadow-sm"
+            suppressHydrationWarning
+          >
             <div className="grid gap-5 sm:grid-cols-2">
               {contactFields.map((field) =>
                 field.as === "textarea" ? (

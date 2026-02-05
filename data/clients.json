@@ -1,0 +1,14 @@
+[
+  { "id": "atlas", "name": "شركة أطلس", "logoKey": "client-logo" },
+  { "id": "almadar", "name": "مجموعة المدار", "logoKey": "client-logo" },
+  { "id": "tech-pioneers", "name": "روّاد التقنية", "logoKey": "client-logo" },
+  { "id": "ofuq-solutions", "name": "حلول أفق", "logoKey": "client-logo" },
+  { "id": "creative-house", "name": "بيت الإبداع", "logoKey": "client-logo" },
+  { "id": "business-elite", "name": "نخبة الأعمال", "logoKey": "client-logo" },
+  { "id": "trade-plus", "name": "تجارة بلس", "logoKey": "client-logo" },
+  { "id": "market-trends", "name": "اتجاهات السوق", "logoKey": "client-logo" },
+  { "id": "leadership-services", "name": "ريادة للخدمات", "logoKey": "client-logo" },
+  { "id": "our-digital-future", "name": "مستقبلنا الرقمي", "logoKey": "client-logo" },
+  { "id": "zen-marketing", "name": "تسويق زِن", "logoKey": "client-logo" },
+  { "id": "ruqi-foundation", "name": "مؤسسة رُقي", "logoKey": "client-logo" }
+]

@@ -1,10 +1,11 @@
-import { projects } from "../data/portfolio";
 import { portfolioIntro } from "../data/sections";
 import ProjectCard from "../components/project-card";
 import Button from "../ui/button";
 import SectionHeading from "../ui/section-heading";
+import { getProjects } from "../lib/projects-store";
 
-export default function PortfolioSection() {
+export default async function PortfolioSection() {
+  const projects = await getProjects();
   return (
     <section id="portfolio" className="bg-muted">
       <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">

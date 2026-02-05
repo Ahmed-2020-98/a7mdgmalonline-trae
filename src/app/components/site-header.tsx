@@ -1,16 +1,25 @@
+"use client";
+
+import Image from "next/image";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { headerCta, headerLabels } from "../data/header";
 import { navigation } from "../data/navigation";
 import { siteConfig } from "../data/site";
-import ThemeToggle from "./theme-toggle";
 import Button from "../ui/button";
+import logoImage from "@/assets/images/logo.webp";
+
+const ThemeToggle = dynamic(() => import("./theme-toggle"), { ssr: false });
 
 export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background backdrop-blur">
       <div className="mx-auto flex w-full max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-        <Link href="/" className="text-lg font-semibold text-primary">
-          {siteConfig.name}
+        <Link href="/" className="flex items-center gap-3">
+          <Image src={logoImage} alt={siteConfig.name} width={44} height={44} />
+          <span className="text-lg font-semibold text-primary">
+            {siteConfig.name}
+          </span>
         </Link>
         <nav className="hidden items-center gap-6 text-sm font-medium text-foreground/80 md:flex">
           {navigation.map((item) => (

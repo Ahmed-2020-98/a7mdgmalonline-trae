@@ -1,9 +1,10 @@
-import { services } from "../data/services";
 import { servicesIntro } from "../data/sections";
 import ServiceCard from "../components/service-card";
 import SectionHeading from "../ui/section-heading";
+import { getServices } from "../lib/site-store";
 
-export default function ServicesSection() {
+export default async function ServicesSection() {
+  const services = await getServices();
   return (
     <section id="services" className="bg-background">
       <div className="mx-auto w-full max-w-6xl px-4 py-16 sm:px-6 lg:px-8 lg:py-24">

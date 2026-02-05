@@ -1,8 +1,9 @@
 import Image from "next/image";
-import { heroContent } from "../data/home";
+import { getHero } from "../lib/site-store";
 import Button from "../ui/button";
 
-export default function HeroSection() {
+export default async function HeroSection() {
+  const heroContent = await getHero();
   return (
     <section id="home" className="bg-muted">
       <div className="mx-auto grid w-full max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:px-8 lg:py-24">
