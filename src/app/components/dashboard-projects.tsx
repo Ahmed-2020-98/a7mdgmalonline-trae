@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { buildClientApiUrl } from "../lib/api-base";
 import { Project } from "../lib/types";
 
 type DashboardProjectsProps = {
@@ -27,7 +28,7 @@ export default function DashboardProjects({
   const isEditing = useMemo(() => Boolean(form.id), [form.id]);
 
   const loadProjects = async () => {
-    const response = await fetch("/api/projects");
+    const response = await fetch(buildClientApiUrl("/api/projects"));
     const data = (await response.json()) as Project[];
     setProjects(data);
   };
@@ -48,7 +49,7 @@ export default function DashboardProjects({
           : "/images/project-placeholder.svg",
       ],
     };
-    await fetch("/api/projects", {
+    await fetch(buildClientApiUrl("/api/projects"), {
       method: isEditing ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -75,7 +76,7 @@ export default function DashboardProjects({
       return;
     }
     setLoading(true);
-    await fetch("/api/projects", {
+    await fetch(buildClientApiUrl("/api/projects"), {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),

@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { buildApiUrl, getApiBaseUrl } from "./api-base";
 import { Client, HeroContent, Service } from "./types";
 import heroImage from "@/assets/images/hero.webp";
 import clientLogo from "@/assets/images/client-logo.svg";
@@ -22,6 +23,25 @@ function resolveImage(key: string) {
 }
 
 export async function getHero(): Promise<HeroContent> {
+  if (getApiBaseUrl()) {
+    const response = await fetch(buildApiUrl("/api/hero"), { cache: "no-store" });
+    if (response.ok) {
+      const data = (await response.json()) as HeroContent | HeroRecord;
+      if ("imageKey" in data) {
+        return {
+          title: data.title,
+          description: data.description,
+          ctaLabel: data.ctaLabel,
+          ctaHref: data.ctaHref,
+          secondaryCtaLabel: data.secondaryCtaLabel,
+          secondaryCtaHref: data.secondaryCtaHref,
+          imageSrc: resolveImage(data.imageKey),
+          imageAlt: data.imageAlt,
+        };
+      }
+      return data as HeroContent;
+    }
+  }
   const raw = await fs.readFile(heroFile, "utf-8");
   const record = JSON.parse(raw) as HeroRecord;
   return {
@@ -42,6 +62,14 @@ export async function saveHero(hero: HeroRecord) {
 }
 
 export async function getServices(): Promise<Service[]> {
+  if (getApiBaseUrl()) {
+    const response = await fetch(buildApiUrl("/api/services"), {
+      cache: "no-store",
+    });
+    if (response.ok) {
+      return (await response.json()) as Service[];
+    }
+  }
   const raw = await fs.readFile(servicesFile, "utf-8");
   return JSON.parse(raw) as Service[];
 }
@@ -52,6 +80,14 @@ export async function saveServices(services: Service[]) {
 }
 
 export async function getClients(): Promise<Client[]> {
+  if (getApiBaseUrl()) {
+    const response = await fetch(buildApiUrl("/api/clients"), {
+      cache: "no-store",
+    });
+    if (response.ok) {
+      return (await response.json()) as Client[];
+    }
+  }
   const records = await getClientRecords();
   return records.map((record) => ({
     id: record.id,

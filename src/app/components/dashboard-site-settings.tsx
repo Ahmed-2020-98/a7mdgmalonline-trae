@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { buildClientApiUrl } from "../lib/api-base";
 import { Client, HeroContent, Service, ServiceIconName } from "../lib/types";
 
 type DashboardSiteSettingsProps = {
@@ -39,8 +40,8 @@ export default function DashboardSiteSettings({
 
   const loadAll = async () => {
     const [servicesRes, clientsRes] = await Promise.all([
-      fetch("/api/services"),
-      fetch("/api/clients"),
+      fetch(buildClientApiUrl("/api/services")),
+      fetch(buildClientApiUrl("/api/clients")),
     ]);
     const servicesData = (await servicesRes.json()) as Service[];
     const clientsData = (await clientsRes.json()) as Client[];
@@ -52,7 +53,7 @@ export default function DashboardSiteSettings({
   const saveHero = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    await fetch("/api/hero", {
+    await fetch(buildClientApiUrl("/api/hero"), {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(hero),
@@ -63,7 +64,7 @@ export default function DashboardSiteSettings({
   const saveService = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    await fetch("/api/services", {
+    await fetch(buildClientApiUrl("/api/services"), {
       method: isEditingService ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(serviceForm),
@@ -87,7 +88,7 @@ export default function DashboardSiteSettings({
       return;
     }
     setLoading(true);
-    await fetch("/api/services", {
+    await fetch(buildClientApiUrl("/api/services"), {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
@@ -100,7 +101,7 @@ export default function DashboardSiteSettings({
     event.preventDefault();
     setLoading(true);
     const payload = { id: clientForm.id || undefined, name: clientForm.name, logoKey: clientForm.logoKey };
-    await fetch("/api/clients", {
+    await fetch(buildClientApiUrl("/api/clients"), {
       method: isEditingClient ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -123,7 +124,7 @@ export default function DashboardSiteSettings({
       return;
     }
     setLoading(true);
-    await fetch("/api/clients", {
+    await fetch(buildClientApiUrl("/api/clients"), {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
