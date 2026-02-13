@@ -12,7 +12,13 @@ export async function getProjects(): Promise<Project[]> {
         cache: "no-store",
       });
       if (response.ok) {
-        return (await response.json()) as Project[];
+        const data = (await response.json()) as Array<
+          Project & { cta_label?: string }
+        >;
+        return data.map((item) => ({
+          ...item,
+          ctaLabel: item.cta_label ?? item.ctaLabel,
+        }));
       }
     }
     const raw = await fs.readFile(dataFile, "utf-8");

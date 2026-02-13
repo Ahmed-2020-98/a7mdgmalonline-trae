@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { buildClientApiUrl } from "../lib/api-base";
+import { buildClientApiUrl, isExternalClientApi } from "../lib/api-base";
 import { Project } from "../lib/types";
 
 type DashboardProjectsProps = {
@@ -23,39 +23,89 @@ export default function DashboardProjects({
 }: DashboardProjectsProps) {
   const [projects, setProjects] = useState<Project[]>(initialProjects);
   const [form, setForm] = useState(emptyForm);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
+  const usingExternalApi = isExternalClientApi();
 
   const isEditing = useMemo(() => Boolean(form.id), [form.id]);
 
   const loadProjects = async () => {
     const response = await fetch(buildClientApiUrl("/api/projects"));
-    const data = (await response.json()) as Project[];
-    setProjects(data);
+    const data = (await response.json()) as Array<Project & { cta_label?: string }>;
+    const mapped = usingExternalApi
+      ? data.map((item) => ({
+          ...item,
+          ctaLabel: item.cta_label ?? item.ctaLabel,
+        }))
+      : data;
+    setProjects(mapped);
+  };
+
+  const uploadProjectImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append("image", file);
+    const response = await fetch("/api/uploads/projects", {
+      method: "POST",
+      body: formData,
+    });
+    if (!response.ok) {
+      return null;
+    }
+    const data = (await response.json()) as { url?: string };
+    return data.url ?? null;
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    const payload: Partial<Project> = {
-      id: form.id || undefined,
-      name: form.name,
-      description: form.description,
-      category: form.category,
-      url: form.url,
-      ctaLabel: form.ctaLabel,
-      images: [
-        form.image && form.image.length > 0
-          ? form.image
-          : "/images/project-placeholder.svg",
-      ],
-    };
-    await fetch(buildClientApiUrl("/api/projects"), {
-      method: isEditing ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    let imageUrl = form.image;
+    if (imageFile) {
+      const uploaded = await uploadProjectImage(imageFile);
+      if (uploaded) {
+        imageUrl = uploaded;
+      }
+    }
+    const images = [
+      imageUrl && imageUrl.length > 0
+        ? imageUrl
+        : "/images/project-placeholder.svg",
+    ];
+    if (usingExternalApi) {
+      const payload = {
+        name: form.name,
+        description: form.description,
+        category: form.category,
+        url: form.url,
+        cta_label: form.ctaLabel,
+        images,
+      };
+      const target = isEditing
+        ? buildClientApiUrl(`/api/projects/${form.id}`)
+        : buildClientApiUrl("/api/projects");
+      await fetch(target, {
+        method: isEditing ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      const payload: Partial<Project> = {
+        id: form.id || undefined,
+        name: form.name,
+        description: form.description,
+        category: form.category,
+        url: form.url,
+        ctaLabel: form.ctaLabel,
+        images,
+      };
+      await fetch(buildClientApiUrl("/api/projects"), {
+        method: isEditing ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    }
     await loadProjects();
     setForm(emptyForm);
+    setImageFile(null);
     setLoading(false);
   };
 
@@ -69,6 +119,7 @@ export default function DashboardProjects({
       ctaLabel: project.ctaLabel,
       image: project.images[0] ? String(project.images[0]) : "",
     });
+    setImageFile(null);
   };
 
   const handleDelete = async (id?: string) => {
@@ -76,11 +127,17 @@ export default function DashboardProjects({
       return;
     }
     setLoading(true);
-    await fetch(buildClientApiUrl("/api/projects"), {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
+    if (usingExternalApi) {
+      await fetch(buildClientApiUrl(`/api/projects/${id}`), {
+        method: "DELETE",
+      });
+    } else {
+      await fetch(buildClientApiUrl("/api/projects"), {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+    }
     await loadProjects();
     setLoading(false);
   };
@@ -198,6 +255,19 @@ export default function DashboardProjects({
                 placeholder="/images/project-placeholder.svg"
               />
             </label>
+            <label className="flex flex-col gap-2 lg:col-span-2">
+              <span className="text-sm font-semibold text-foreground">
+                صورة المشروع (رفع ملف)
+              </span>
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) =>
+                  setImageFile(event.target.files ? event.target.files[0] : null)
+                }
+                className="rounded-2xl border border-border bg-muted/40 px-4 py-3 text-sm text-foreground outline-none transition focus:border-primary"
+              />
+            </label>
           </div>
           <div className="mt-6 flex flex-wrap gap-3">
             <button
@@ -209,7 +279,10 @@ export default function DashboardProjects({
             </button>
             <button
               type="button"
-              onClick={() => setForm(emptyForm)}
+              onClick={() => {
+                setForm(emptyForm);
+                setImageFile(null);
+              }}
               className="rounded-full border border-border px-6 py-3 text-sm font-semibold text-foreground/70 transition hover:border-primary/40 hover:text-primary"
             >
               تفريغ الحقول

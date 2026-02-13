@@ -1,15 +1,11 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { headerCta, headerLabels } from "../data/header";
 import { navigation } from "../data/navigation";
 import { siteConfig } from "../data/site";
 import Button from "../ui/button";
 import logoImage from "@/assets/images/logo.webp";
-
-const ThemeToggle = dynamic(() => import("./theme-toggle"), { ssr: false });
+import ThemeToggle from "./theme-toggle";
 
 export default function SiteHeader() {
   return (

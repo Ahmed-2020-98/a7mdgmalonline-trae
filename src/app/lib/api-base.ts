@@ -21,3 +21,11 @@ export function buildClientApiUrl(path: string) {
   }
   return `${base}${path}`;
 }
+
+export function isExternalServerApi() {
+  return Boolean(getApiBaseUrl());
+}
+
+export function isExternalClientApi() {
+  return Boolean(getClientApiBaseUrl());
+}

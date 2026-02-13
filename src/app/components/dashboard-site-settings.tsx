@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { buildClientApiUrl } from "../lib/api-base";
+import { buildClientApiUrl, isExternalClientApi } from "../lib/api-base";
 import { Client, HeroContent, Service, ServiceIconName } from "../lib/types";
 
 type DashboardSiteSettingsProps = {
@@ -34,6 +34,7 @@ export default function DashboardSiteSettings({
   const [clientForm, setClientForm] = useState(emptyClient);
   const [loading, setLoading] = useState(false);
   const [tab, setTab] = useState<"hero" | "services" | "clients">("hero");
+  const usingExternalApi = isExternalClientApi();
 
   const isEditingService = useMemo(() => Boolean(serviceForm.id), [serviceForm.id]);
   const isEditingClient = useMemo(() => Boolean(clientForm.id), [clientForm.id]);
@@ -44,31 +45,74 @@ export default function DashboardSiteSettings({
       fetch(buildClientApiUrl("/api/clients")),
     ]);
     const servicesData = (await servicesRes.json()) as Service[];
-    const clientsData = (await clientsRes.json()) as Client[];
+    const clientsData = (await clientsRes.json()) as Array<
+      Client & { logo_src?: string }
+    >;
+    const mappedClients = usingExternalApi
+      ? clientsData.map((client) => ({
+          id: client.id,
+          name: client.name,
+          logoSrc: client.logo_src ?? client.logoSrc,
+        }))
+      : clientsData;
     setServices(servicesData);
-    setClients(clientsData);
+    setClients(mappedClients);
   };
 
 
   const saveHero = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    await fetch(buildClientApiUrl("/api/hero"), {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(hero),
-    });
+    if (usingExternalApi) {
+      const payload = {
+        title: hero.title,
+        description: hero.description,
+        cta_label: hero.ctaLabel,
+        cta_href: hero.ctaHref,
+        secondary_cta_label: hero.secondaryCtaLabel,
+        secondary_cta_href: hero.secondaryCtaHref,
+        image_src: hero.imageKey,
+        image_alt: hero.imageAlt,
+      };
+      await fetch(buildClientApiUrl("/api/hero"), {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      await fetch(buildClientApiUrl("/api/hero"), {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(hero),
+      });
+    }
     setLoading(false);
   };
 
   const saveService = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    await fetch(buildClientApiUrl("/api/services"), {
-      method: isEditingService ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(serviceForm),
-    });
+    const payload = {
+      title: serviceForm.title,
+      description: serviceForm.description,
+      icon: serviceForm.icon,
+    };
+    if (usingExternalApi) {
+      const target = isEditingService
+        ? buildClientApiUrl(`/api/services/${serviceForm.id}`)
+        : buildClientApiUrl("/api/services");
+      await fetch(target, {
+        method: isEditingService ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      await fetch(buildClientApiUrl("/api/services"), {
+        method: isEditingService ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: serviceForm.id || undefined, ...payload }),
+      });
+    }
     await loadAll();
     setServiceForm(emptyService);
     setLoading(false);
@@ -88,11 +132,17 @@ export default function DashboardSiteSettings({
       return;
     }
     setLoading(true);
-    await fetch(buildClientApiUrl("/api/services"), {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
+    if (usingExternalApi) {
+      await fetch(buildClientApiUrl(`/api/services/${id}`), {
+        method: "DELETE",
+      });
+    } else {
+      await fetch(buildClientApiUrl("/api/services"), {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+    }
     await loadAll();
     setLoading(false);
   };
@@ -100,12 +150,31 @@ export default function DashboardSiteSettings({
   const saveClient = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
-    const payload = { id: clientForm.id || undefined, name: clientForm.name, logoKey: clientForm.logoKey };
-    await fetch(buildClientApiUrl("/api/clients"), {
-      method: isEditingClient ? "PUT" : "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    if (usingExternalApi) {
+      const payload = {
+        name: clientForm.name,
+        logo_src: clientForm.logoKey ?? "client-logo",
+      };
+      const target = isEditingClient
+        ? buildClientApiUrl(`/api/clients/${clientForm.id}`)
+        : buildClientApiUrl("/api/clients");
+      await fetch(target, {
+        method: isEditingClient ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    } else {
+      const payload = {
+        id: clientForm.id || undefined,
+        name: clientForm.name,
+        logoKey: clientForm.logoKey,
+      };
+      await fetch(buildClientApiUrl("/api/clients"), {
+        method: isEditingClient ? "PUT" : "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+    }
     await loadAll();
     setClientForm(emptyClient);
     setLoading(false);
@@ -124,11 +193,17 @@ export default function DashboardSiteSettings({
       return;
     }
     setLoading(true);
-    await fetch(buildClientApiUrl("/api/clients"), {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ id }),
-    });
+    if (usingExternalApi) {
+      await fetch(buildClientApiUrl(`/api/clients/${id}`), {
+        method: "DELETE",
+      });
+    } else {
+      await fetch(buildClientApiUrl("/api/clients"), {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id }),
+      });
+    }
     await loadAll();
     setLoading(false);
   };
